@@ -6,7 +6,7 @@ import { useDataLayerValue } from "./DataLayer";
 
 function Checkout() {
   //pulling the dispatched items from the basket in the datalayer
-  const [{ basket }, dispatch] = useDataLayerValue();
+  const [{ basket, user }, dispatch] = useDataLayerValue();
   return (
     <div className="checkout">
       <div className="checkout__left">
@@ -17,6 +17,7 @@ function Checkout() {
         />
 
         <div>
+          <h3>Hello, {user?.email}</h3>
           <h2 className="checkout__title">Your Shopping Basket</h2>
 
           {basket.map((item) => (

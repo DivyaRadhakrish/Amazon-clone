@@ -4,9 +4,17 @@ import SearchIcon from "@mui/icons-material/Search";
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 import { Link } from "react-router-dom";
 import { useDataLayerValue } from "./DataLayer";
+import { auth } from "./firebase";
 
 function Header() {
-  const [{ basket }, dispatch] = useDataLayerValue(); // This pulls the currentstate of the basket from the datalayer
+  const [{ basket, user }, dispatch] = useDataLayerValue(); // This pulls the currentstate of the basket from the datalayer
+
+  const handleAuthentication = () => {
+    if (user) {
+      //If there is an user, there will be tha authentication of signOut
+      auth.signOut();
+    }
+  };
   return (
     <div className="header">
       <Link to="/">
@@ -22,10 +30,15 @@ function Header() {
         <SearchIcon className="header__searchIcon" />
       </div>
       <div className="header__nav">
-        <Link to="/login">
-          <div className="header__option">
-            <span className="header__optionLineOne">Hello Guest</span>
-            <span className="header__optionLineTwo">SignIn</span>
+        <Link to={!user && "/login"}>
+          {/** If there was no user, then only it navigate to the login page */}
+          <div onClick={handleAuthentication} className="header__option">
+            <span className="header__optionLineOne">Hello {user?.email}</span>
+            <span className="header__optionLineTwo">
+              {/*If there is an user signout otherwise signin**/}
+              {user ? "Sign Out" : "Sign In"}
+            </span>
+            {}
           </div>
         </Link>
         <div className="header__option">
